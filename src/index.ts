@@ -1,7 +1,7 @@
 import { mkdir, readdir, readFile, rm, writeFile } from 'fs/promises';
 import { dirname } from 'path';
 
-import { exec } from './core';
+import { exec } from './lib/node/child-process';
 
 const config = {
   input: {
