@@ -1,11 +1,15 @@
 import { spawn } from 'child_process';
 
 export interface SpawnProcessProps {
+  /** Arguments to pass to the command. */
   args?: string[];
+  /** Command to run. */
   command: string;
+  /** Whether to run the command in shell mode. */
   shell?: boolean;
 }
 
+/** Spawn a shell process to run a terminal command. */
 export function spawnProcess({
   args = [],
   command,

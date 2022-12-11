@@ -1,6 +1,7 @@
 import { readFile as nodeReadFile } from 'fs/promises';
 
 export interface ReadFileProps {
+  /** Path of the file to read. */
   path: string;
 }
 

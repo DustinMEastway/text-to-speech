@@ -1,3 +1,4 @@
+/** Data structure representing a EPUB's content.opf file. */
 export interface EpubBookContent {
   package: {
     manifest: [

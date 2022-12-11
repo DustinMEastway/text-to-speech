@@ -23,6 +23,7 @@ export interface ConvertHtmlToTextProps {
   html: string;
 }
 
+/** Convert HTML into just the text content of the elements. */
 export function convertHtmlToText({
   html
 }: ConvertHtmlToTextProps): string {

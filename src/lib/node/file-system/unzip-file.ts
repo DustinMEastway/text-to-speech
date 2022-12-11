@@ -18,7 +18,6 @@ export function unzipFile({
     outPath ??= dirname(path);
 
     const zipper = new Zipper(path);
-    console.log(path, outPath);
     zipper.extractAllToAsync(outPath, true, true, (error) => {
       if (error) {
         reject(error);

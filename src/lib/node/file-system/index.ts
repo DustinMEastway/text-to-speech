@@ -1,3 +1,4 @@
+export * from './delete-path';
 export * from './list-stats';
 export * from './make-directory';
 export * from './move-path';

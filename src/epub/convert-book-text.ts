@@ -19,6 +19,7 @@ export interface ConvertBookTextProps {
   outputPath: string;
 }
 
+/** Convert a book into txt files. */
 export async function convertBookText({
   book,
   inputPath,
