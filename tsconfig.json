@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "esnext",
     "module": "commonjs",
-    "lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
+    "lib": ["dom", "es6", "esnext", "esnext.asynciterable"],
     "skipLibCheck": true,
     "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": "./build",
     "moduleResolution": "node",
     "removeComments": true,
     "noImplicitAny": true,
@@ -23,6 +23,14 @@
     "resolveJsonModule": true,
     "baseUrl": "."
   },
-  "exclude": ["node_modules"],
-  "include": ["./src/**/*.ts"]
+  "exclude": [
+    "./build",
+    "node_modules"
+  ],
+  "include": [
+    "**/*.cjs",
+    "**/*.js",
+    "**/*.ts",
+    ".eslintrc.cjs"
+  ]
 }
