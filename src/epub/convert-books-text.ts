@@ -1,3 +1,5 @@
+import { runParallel } from '@brass-raven/core/async';
+import { environment } from '../environment';
 import { noop } from '../lib/core/utility';
 import { convertBookText } from './convert-book-text';
 import { Book } from './types';
@@ -16,14 +18,12 @@ export async function convertBooksText({
   onBookStatusChange = noop,
   outputPath
 }: ConvertBooksTextProps): Promise<void> {
-  await Promise.all(
-    [...books].map(([, book]) => {
-      return convertBookText({
-        book,
-        inputPath: `${inputPath}/${book.name}`,
-        onBookStatusChange,
-        outputPath: `${outputPath}/${book.name}`
-      });
-    })
-  );
+  await runParallel([...books], ([, book]) => {
+    return convertBookText({
+      book,
+      inputPath: `${inputPath}/${book.name}`,
+      onBookStatusChange,
+      outputPath: `${outputPath}/${book.name}`
+    });
+  }, { batchSize: environment.batchSize.bookText });
 }

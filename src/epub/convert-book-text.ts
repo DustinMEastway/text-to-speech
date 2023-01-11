@@ -1,3 +1,5 @@
+import { runParallel } from '@brass-raven/core/async';
+import { environment } from '../environment';
 import { padString } from '../lib/core/string';
 import {
   makeDirectory,
@@ -54,8 +56,7 @@ export async function convertBookText({
 
   const chapterNameLength = (chapterPaths.length + 1).toString().length;
   makeDirectory({ path: outputPath });
-  for (let i = 0; i < chapterPaths.length; ++i) {
-    const chapterPath = chapterPaths[i];
+  await runParallel(chapterPaths, async (chapterPath, index) => {
     if (!chapterPath) {
       outputBookStatus(BookStatus.failed);
       return;
@@ -69,12 +70,12 @@ export async function convertBookText({
 
     const chapterName = padString({
       minLength: chapterNameLength,
-      value: i + 1
+      value: index + 1
     });
 
     await writeFile({
       content: fileContent,
       path: `${outputPath}/${chapterName}.txt`
     });
-  }
+  }, { batchSize: environment.batchSize.chapterText });
 }

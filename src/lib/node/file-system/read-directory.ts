@@ -1,3 +1,4 @@
+import { runParallel } from '@brass-raven/core/async';
 import { PathLike, Stats } from 'fs';
 import { readdir } from 'fs/promises';
 import { listStats } from './list-stats';
@@ -21,12 +22,12 @@ export async function readDirectory({
 }: ReadDirectoryProps): Promise<DirectoryItem[]> {
   const itemPromises = (await readdir(path)).filter((item) => {
     return includeHidden || item[0] !== '.';
-  }).map(async (item) => {
+  });
+
+  return await runParallel(itemPromises, async (item) => {
     return {
       name: item,
       stats: await listStats({ path: `${path}/${item}` })
     };
   });
-
-  return await Promise.all(itemPromises);
 }

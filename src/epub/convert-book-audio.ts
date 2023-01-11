@@ -1,3 +1,5 @@
+import { runParallel } from '@brass-raven/core/async';
+import { environment } from '../environment';
 import { spawnProcess } from '../lib/node/child-process';
 import { deletePath, readDirectory } from '../lib/node/file-system';
 import {
@@ -24,7 +26,7 @@ export async function convertBookAudio({
   };
   outputBookStatus(BookStatus.convertingAudio);
   const chapters = await readDirectory({ path: inputPath });
-  await Promise.all(chapters.map(async ({ name: chapter }) => {
+  await runParallel(chapters, async ({ name: chapter }) => {
     const txtFilePath = `${inputPath}/${chapter}`;
     await spawnProcess({
       args: [
@@ -37,7 +39,7 @@ export async function convertBookAudio({
     });
 
     await deletePath({ path: txtFilePath });
-  }));
+  }, { batchSize: environment.batchSize.chapterAudio });
 
   outputBookStatus(BookStatus.converted);
 }

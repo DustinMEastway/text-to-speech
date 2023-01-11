@@ -1,3 +1,4 @@
+import { runParallel } from '@brass-raven/core/async';
 import {
   movePath,
   readDirectory,
@@ -14,10 +15,11 @@ export async function unzipBookDirectory({
   path
 }: UnzipBookDirectoryProps): Promise<void> {
   const inputPathItems = await readDirectory({ path });
-
-  await Promise.all(inputPathItems.filter(({ name, stats }) => {
+  const epubPaths = inputPathItems.filter(({ name, stats }) => {
     return name.endsWith('.epub') && stats?.isFile();
-  }).map(async ({ name }) => {
+  });
+
+  await runParallel(epubPaths, async ({ name }) => {
     const oldBookPath = `${path}/${name}`;
     const newBookPath = `${path}/${name.replace(/\.epub$/, '')}/${name}`;
     await movePath({
@@ -26,5 +28,5 @@ export async function unzipBookDirectory({
     });
 
     await unzipFile({ path: newBookPath });
-  }));
+  });
 }
